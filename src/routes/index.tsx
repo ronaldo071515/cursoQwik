@@ -8,7 +8,7 @@ export default component$(() => {
   // const pokemonId2 = useStore();//arrays, objetos
   const pokemonId = useSignal(1);//primitivos string, number, booleans
   const showBackImage = useSignal(false);
-  const isVisibleImage = useSignal(true);
+  const isPokemonVisible = useSignal(true);
   
   const changePokemonId = $((value: number) => {
     if( pokemonId.value + value <= 0 ) return; 
@@ -28,14 +28,14 @@ export default component$(() => {
       <PokemonImage id={pokemonId.value} 
         size={200} 
         backImage={showBackImage.value} 
-        isVisible={isVisibleImage.value}/>
+        isVisible={isPokemonVisible.value}/>
 
       <div class="mt-2">
         <button onClick$={() => changePokemonId(-1) } class="btn btn-primary mr-2">Anterior</button>
         <button onClick$={() => changePokemonId(+1) } class="btn btn-primary mr-2">Siguiente</button>
 
         <button onClick$={() => showBackImage.value = !showBackImage.value } class="btn btn-primary mr-2">Voltear</button>
-        <button onClick$={() => isVisibleImage.value = !isVisibleImage.value } class="btn btn-primary mr-2">Revelar</button>
+        <button onClick$={() => isPokemonVisible.value = !isPokemonVisible.value } class="btn btn-primary mr-2">Revelar</button>
       </div>
 
     </>
