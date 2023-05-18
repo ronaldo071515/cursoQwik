@@ -5,7 +5,7 @@ import Navbar from '~/components/shared/navbar/navbar';
 import styles from './styles.css?inline';
 
 export default component$(() => {
-  useStyles$(styles);
+  useStyles$(styles);//de manera global los estilos
   return (
     <>
       <Navbar />
