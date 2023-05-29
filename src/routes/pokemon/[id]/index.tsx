@@ -1,10 +1,8 @@
-import { component$, useContext } from '@builder.io/qwik';
+import { component$ } from '@builder.io/qwik';
 import { routeLoader$ } from '@builder.io/qwik-city';
 
 import { PokemonImage } from '~/components/pokemons/pokemon-image';
-import { PokemonGameContext } from '~/context';
-
-// routeLoader$ Nos permite ejecurar antes que se renderise el component
+import { usePokemonGame } from '../../../hooks/use-pokemon-game';
 
 export const usePokemonId = routeLoader$<number>(({ params, redirect }) => {
     const id = Number(params.id);
@@ -17,18 +15,27 @@ export const usePokemonId = routeLoader$<number>(({ params, redirect }) => {
 
 export default component$(() => {
 
-    // const loc = useLocation();
-    const pokemonId = usePokemonId();
-    const pokemonGame = useContext( PokemonGameContext );
+    const {
+        toggleFromBack,
+        toggleVisible,
+        isPokemonVisible,
+        showBackImage,
+        pokemonId
+      } = usePokemonGame();
 
     return (
         <>
             {/* <span class="text-5xl">Pokemon: {loc.params.id}</span> */}
-            <span class="text-5xl">Pokemon: {pokemonId}</span>
+            <span class="text-5xl">Pokemon: {pokemonId.value}</span>
             <PokemonImage 
                 id={ pokemonId.value }
-                isVisible={pokemonGame.isPokemonVisible}
-                backImage={pokemonGame.showBackImage}/>
+                isVisible={isPokemonVisible.value}
+                backImage={showBackImage.value}/>
+
+            <div class="mt-2">
+                <button onClick$={ toggleFromBack } class="btn btn-primary mr-2">Voltear</button>
+                <button onClick$={ toggleVisible } class="btn btn-primary">{isPokemonVisible.value ? 'Ocultar' : 'Revelar'}</button>
+            </div>
         </>
     )
 

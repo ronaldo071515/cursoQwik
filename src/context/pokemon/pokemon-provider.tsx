@@ -6,7 +6,7 @@ import { type PokemonListState, PokemonListContext } from './pokemon-list.contex
 export const PokemonProvider = component$(() => {
     //estado inicial
     const pokemonGame = useStore<PokemonGameState>({
-        pokemonId: 4,
+        pokemonId: 1,
         isPokemonVisible: true,
         showBackImage: false
     });
