@@ -1,25 +1,30 @@
-import { $, component$, useOnDocument, useStore, useTask$ } from '@builder.io/qwik';
+import { $, component$, useOnDocument, useStore, useTask$, useContext } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 
 
 import { getSmallPokemons } from '~/helpers/get-small-pokemons';
 import { PokemonImage } from '~/components/pokemons/pokemon-image';
 import type { SmallPokemon } from '~/interfaces';
+import { PokemonListContext } from '~/context';
 
-interface PokemonPageState {
-  currentPage: number;
-  isLoading: boolean;
-  pokemons: SmallPokemon[];
-}
+// interface PokemonPageState {
+//   currentPage: number;
+//   isLoading: boolean;
+//   pokemons: SmallPokemon[];
+// }
 
 export default component$(() => {
 
   //crear un estado
-  const pokemonState = useStore<PokemonPageState>({
+  /* const pokemonState = useStore<PokemonPageState>({
     currentPage: 0,
     isLoading: false,
     pokemons: []
-  });
+  }); */
+
+  //creando context
+  const pokemonState = useContext( PokemonListContext );
+
   //Accion visible por el cliente solo cuando se monta el component
   //cleanup para hacer un debounce limpiar la tarea anterior
   // useVisibleTask$( async({ track }) => {
@@ -27,11 +32,22 @@ export default component$(() => {
   //   const pokemons = await getSmallPokemons( pokemonState.currentPage * 10 );
   //   pokemonState.pokemons = [ ...pokemonState.pokemons, ...pokemons ];
   // });
-  useTask$( async({ track }) => {
+  /* useTask$( async({ track }) => {
     track(() => pokemonState.currentPage);
     // pokemonState.isLoading = true;
     const pokemons = await getSmallPokemons( pokemonState.currentPage * 10, 30 );
     pokemonState.pokemons = [ ...pokemonState.pokemons, ...pokemons ];
+    pokemonState.isLoading = false;
+  }); */
+  useTask$( async({track}) => {
+
+    track(() => pokemonState.currentPage);
+    const pokemons = await getSmallPokemons(pokemonState.currentPage * 10, 30)
+    // Aqui hacemos la verificacion y si almenos un pokemon esta dentro del listado, hacemos el return
+    for (const key in pokemons) {
+       if (pokemonState.pokemons.some(pokemon => pokemon.name == pokemons[key].name)) return
+    }
+    pokemonState.pokemons = [...pokemonState.pokemons, ...pokemons]
     pokemonState.isLoading = false;
   });
   
