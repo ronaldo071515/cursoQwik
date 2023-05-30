@@ -2,8 +2,8 @@ import { $, component$ } from '@builder.io/qwik';
 import { useNavigate } from '@builder.io/qwik-city';
 import type { DocumentHead } from '@builder.io/qwik-city';
 
-import { PokemonImage } from '../components/pokemons/pokemon-image';
-import { usePokemonGame } from '../hooks/use-pokemon-game';
+import { PokemonImage } from '../../components/pokemons/pokemon-image';
+import { usePokemonGame } from '../../hooks/use-pokemon-game';
 
 export default component$(() => {
 
